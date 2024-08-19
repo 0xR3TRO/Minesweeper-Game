@@ -3,24 +3,21 @@ let rows = 8;
 let columns = 8;
 
 let minesCount = 10;
-let minesLocation = []; // "2-2", "3-4", "2-1"
+let minesLocation = [];
 
-let tilesClicked = 0; //goal to click all tiles except the ones containing mines
+let tilesClicked = 0;
 let flagEnabled = false;
 
 let gameOver = false;
 
 window.onload = function () {
 	startGame();
+	document
+		.getElementById("restart-button")
+		.addEventListener("click", restartGame); // Event listener dla przycisku Restart
 };
 
 function setMines() {
-	// minesLocation.push("2-2");
-	// minesLocation.push("2-3");
-	// minesLocation.push("5-6");
-	// minesLocation.push("3-4");
-	// minesLocation.push("1-1");
-
 	let minesLeft = minesCount;
 	while (minesLeft > 0) {
 		let r = Math.floor(Math.random() * rows);
@@ -35,15 +32,22 @@ function setMines() {
 }
 
 function startGame() {
+	// Czyszczenie poprzedniej planszy
+	document.getElementById("board").innerHTML = "";
+	board = [];
+	minesLocation = [];
+	tilesClicked = 0;
+	gameOver = false;
 	document.getElementById("mines-count").innerText = minesCount;
-	document.getElementById("flag-button").addEventListener("click", setFlag);
+	document.getElementById("flag-button").style.backgroundColor = "lightgray";
+	flagEnabled = false;
+
 	setMines();
 
-	//populate our board
+	// Ustawienie planszy
 	for (let r = 0; r < rows; r++) {
 		let row = [];
 		for (let c = 0; c < columns; c++) {
-			//<div id="0-0"></div>
 			let tile = document.createElement("div");
 			tile.id = r.toString() + "-" + c.toString();
 			tile.addEventListener("click", clickTile);
@@ -52,8 +56,10 @@ function startGame() {
 		}
 		board.push(row);
 	}
+}
 
-	console.log(board);
+function restartGame() {
+	startGame(); // Po prostu uruchamiamy ponownie grę
 }
 
 function setFlag() {
@@ -82,13 +88,12 @@ function clickTile() {
 	}
 
 	if (minesLocation.includes(tile.id)) {
-		// alert("GAME OVER");
 		gameOver = true;
 		revealMines();
 		return;
 	}
 
-	let coords = tile.id.split("-"); // "0-0" -> ["0", "0"]
+	let coords = tile.id.split("-");
 	let r = parseInt(coords[0]);
 	let c = parseInt(coords[1]);
 	checkMine(r, c);

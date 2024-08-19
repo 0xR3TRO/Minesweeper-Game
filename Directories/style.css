@@ -81,7 +81,8 @@ h1 {
 	color: #7f8c8d;
 }
 
-#flag-button {
+#flag-button,
+#restart-button {
 	width: 100px;
 	height: 50px;
 	font-size: 30px;
@@ -92,6 +93,7 @@ h1 {
 	cursor: pointer;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 	transition: background-color 0.3s ease;
+	margin-right: 30px;
 }
 
 #flag-button:hover {
